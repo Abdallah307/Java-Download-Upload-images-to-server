@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="mainScene" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="554.0" prefWidth="667.0" style="-fx-background-color: green;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+   <children>
+      <AnchorPane fx:id="loginScene" layoutX="-1.0" prefHeight="553.0" prefWidth="667.0" style="-fx-background-color: #22c4d4;">
+         <children>
+            <Label alignment="CENTER" layoutX="264.0" layoutY="25.0" text="Login" textFill="#f2ebeb">
+               <font>
+                  <Font name="System Bold" size="45.0" />
+               </font>
+            </Label>
+            <AnchorPane layoutX="182.0" layoutY="130.0" prefHeight="294.0" prefWidth="299.0" style="-fx-background-color: #2596a1; -fx-background-radius: 10;">
+               <children>
+                  <Label layoutX="111.0" layoutY="27.0" text="Login" textFill="#fcf8f8">
+                     <font>
+                        <Font size="28.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="userName" layoutX="64.0" layoutY="110.0" prefHeight="35.0" prefWidth="171.0" promptText="Username" style="-fx-background-radius: 10;" />
+                  <Button fx:id="loginButton" layoutX="107.0" layoutY="228.0" mnemonicParsing="false" onAction="#login" prefHeight="35.0" prefWidth="85.0" style="-fx-background-color: #1bb4c2; -fx-background-radius: 10;" text="Login" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Button>
+                  <PasswordField fx:id="password" layoutX="64.0" layoutY="170.0" prefHeight="35.0" prefWidth="171.0" promptText="Password" style="-fx-background-radius: 10;" />
+               </children>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="appScene" layoutY="-2.0" prefHeight="563.0" prefWidth="667.0" style="-fx-background-color: #002c3f;" visible="false">
+         <children>
+            <Label layoutX="72.0" layoutY="27.0" text="Download and Upload Images" textFill="#fff7f7">
+               <font>
+                  <Font size="35.0" />
+               </font>
+            </Label>
+            <Separator layoutX="320.0" layoutY="82.0" orientation="VERTICAL" prefHeight="481.0" prefWidth="17.0" />
+            <Separator layoutX="-3.0" layoutY="81.0" prefHeight="0.0" prefWidth="667.0" />
+            <Label layoutX="37.0" layoutY="103.0" text="Download Section" textFill="#fffafa">
+               <font>
+                  <Font size="29.0" />
+               </font>
+            </Label>
+            <Label layoutX="396.0" layoutY="103.0" text="Upload Section" textFill="#f2eded">
+               <font>
+                  <Font size="29.0" />
+               </font>
+            </Label>
+            <Button fx:id="downloadButton" layoutX="168.0" layoutY="496.0" mnemonicParsing="false" onAction="#downloadImageFromServer" prefHeight="44.0" prefWidth="140.0" style="-fx-background-color: #1bb4c2; -fx-background-radius: 10;" text="Download" textFill="#fffafa">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </Button>
+            <Label layoutX="22.0" layoutY="269.0" text="Preview Image :" textFill="#fcf5f5">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Button fx:id="chooseUpload" layoutX="352.0" layoutY="172.0" mnemonicParsing="false" style="-fx-background-color: #1bb4c2; -fx-background-radius: 10;" text="Choose Image to Upload" textFill="#fcf9f9">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </Button>
+            <Label layoutX="352.0" layoutY="256.0" text="Preview Image :" textFill="#ebe7e7">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Button fx:id="uploadButton" layoutX="542.0" layoutY="497.0" mnemonicParsing="false" onAction="#uploadImageToServer" style="-fx-background-color: #1bb4c2; -fx-background-radius: 10;" text="Upload" textFill="#fffafa">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </Button>
+            <ImageView fx:id="imageview" fitHeight="150.0" fitWidth="200.0" layoutX="37.0" layoutY="314.0" pickOnBounds="true" preserveRatio="true" />
+            <ChoiceBox fx:id="chooseCombo" layoutX="37.0" layoutY="159.0" prefHeight="42.0" prefWidth="262.0" />
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>
