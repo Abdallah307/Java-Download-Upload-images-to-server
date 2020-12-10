@@ -45,17 +45,36 @@ public class Controller implements Initializable {
     Button uploadButton;
     @FXML
     ImageView imageview;
+    @FXML
+    RadioButton phpRadio;
+    @FXML
+    RadioButton servletRadio;
+    @FXML
+    Button logoutButton;
+
 
 
     private File chosenImage;
     private String dataStr="";
     private ArrayList<String> myUrls = new ArrayList<>();
     private String contentStr = "application/x-www-form-urlencoded";
+    private ToggleGroup group;
+    private URL myURL;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         chooseCombo.getSelectionModel().selectFirst();
-        getDownloadableImages();
+
+
+        group = new ToggleGroup();
+        phpRadio.setToggleGroup(group);
+        servletRadio.setToggleGroup(group);
+
+        phpRadio.setUserData("php");
+        servletRadio.setUserData("servlet");
+        servletRadio.setSelected(true);
+
+
 
     }
 
@@ -63,7 +82,13 @@ public class Controller implements Initializable {
         OutputStream os;
         InputStream is;
         try {
-            URL myURL = new URL("http://localhost:8000/Network2Server_war_exploded/retrieve");
+            if(group.getSelectedToggle().getUserData().equals("servlet")){
+                myURL = new URL("http://localhost:8000/Network2Server_war_exploded/retrieve");
+
+            }
+            else{
+                myURL = new URL("http://localhost/downloadable.php");
+            }
             URLConnection myConn = myURL.openConnection();
             myConn.setDoOutput(true);
             myConn.setDoInput(true);
@@ -88,6 +113,7 @@ public class Controller implements Initializable {
             String newS = SS.substring(1,SS.length()-2);
             String availableImages[] = newS.split(",");
             for(String ff : availableImages){
+                if(ff!="")
                 chooseCombo.getItems().add(ff);
             }
 
@@ -98,16 +124,25 @@ public class Controller implements Initializable {
     }
 
     public void login(ActionEvent event) {
-        dataStr="";
+
         OutputStream os;
         InputStream is;
-
+        System.out.println(group.getSelectedToggle().getUserData());
+        boolean isPHP = false;
         String username = userName.getText();
         String pass = password.getText();
         String authStringEnc = encodeCredentials(username, pass);
+        dataStr="username="+username+"&password="+pass;
 
         try {
-            URL myURL = new URL("http://localhost:8000/Network2Server_war_exploded/login");
+            if(group.getSelectedToggle().getUserData().equals("servlet")){
+                myURL = new URL("http://localhost:8000/Network2Server_war_exploded/login");
+                isPHP = false;
+            }
+            else{
+                myURL = new URL("http://localhost/login.php");
+                isPHP = true;
+            }
             URLConnection myConn = myURL.openConnection();
             myConn.setRequestProperty("Authorization", "Basic " + authStringEnc);
             myConn.setDoOutput(true);
@@ -132,17 +167,35 @@ public class Controller implements Initializable {
             }
             System.out.println(SS);
 
-            if(SS.intern() == "Authorized\n"){
-                loginScene.setVisible(false);
-                appScene.setVisible(true);
+            if(!isPHP){
+                if(SS.intern() == "Authorized\n"){
+                    loginScene.setVisible(false);
+                    appScene.setVisible(true);
+                    getDownloadableImages();
+                }
+                else{
+                    Alert alertInformation = new Alert(Alert.AlertType.INFORMATION);
+                    alertInformation.setTitle("Login");
+                    alertInformation.setHeaderText("Status");
+                    alertInformation.setContentText("Failed");
+                    alertInformation.showAndWait();
+                }
             }
             else{
-                Alert alertInformation = new Alert(Alert.AlertType.INFORMATION);
-                alertInformation.setTitle("Login");
-                alertInformation.setHeaderText("Status");
-                alertInformation.setContentText("Failed");
-                alertInformation.showAndWait();
+                if(SS.intern() == "Authorized"){
+                    loginScene.setVisible(false);
+                    appScene.setVisible(true);
+                    getDownloadableImages();
+                }
+                else{
+                    Alert alertInformation = new Alert(Alert.AlertType.INFORMATION);
+                    alertInformation.setTitle("Login");
+                    alertInformation.setHeaderText("Status");
+                    alertInformation.setContentText("Failed");
+                    alertInformation.showAndWait();
+                }
             }
+
 
         }catch (Exception e){
             System.out.println(e.toString());
@@ -154,13 +207,18 @@ public class Controller implements Initializable {
     public void downloadImageFromServer() throws IOException {
         String fileName = "";
         fileName = chooseCombo.getSelectionModel().getSelectedItem().toString();
+        dataStr="file="+fileName;
 
         try{
-            //String fileName = "im.jpg";
-            String website = "http://localhost:8000/Network2Server_war_exploded/download";
             InputStream inputStream;
-            URL url = new URL(website);
-            URLConnection myConn = url.openConnection();
+            if(group.getSelectedToggle().getUserData().equals("servlet")){
+                myURL = new URL("http://localhost:8000/Network2Server_war_exploded/download");
+            }
+            else{
+                myURL = new URL("http://localhost/download.php");
+            }
+
+            URLConnection myConn = myURL.openConnection();
             myConn.setDoOutput(true);
             myConn.setDoInput(true);
             myConn.setRequestProperty("body", fileName);
@@ -186,7 +244,7 @@ public class Controller implements Initializable {
 
             inputStream.close();
             outputStream.close();
-            FileInputStream ins = new FileInputStream("/home/abdallah/Desktop/network2Client/JavaClientNetwork2/"+fileName);
+            FileInputStream ins = new FileInputStream("/home/abdallah/Desktop/network2Client/"+fileName);
             Image image = new Image(ins);
             imageview.setImage(image);
 
@@ -200,11 +258,19 @@ public class Controller implements Initializable {
     public void uploadImageToServer(ActionEvent event) throws IOException {
         String charset = "UTF-8";
         File uploadFile1 = chosenImage;
-        String requestURL = "http://localhost:8000/Network2Server_war_exploded/upload";
+        String requestURL;
+
+        if(group.getSelectedToggle().getUserData().equals("servlet")){
+            requestURL = "http://localhost:8000/Network2Server_war_exploded/upload";
+        }
+        else{
+            requestURL = "http://localhost/up.php";
+        }
+
 
         try {
             MultipartUtility multipart = new MultipartUtility(requestURL, charset);
-            multipart.addFilePart("fileUpload", uploadFile1);
+            multipart.addFilePart("fileToUpload", uploadFile1);
             List<String> response = multipart.finish();
             System.out.println("SERVER REPLIED:");
             for (String line : response) {
@@ -233,6 +299,12 @@ public class Controller implements Initializable {
         uploadImage.setImage(im);
         return file;
 
+    }
+
+    public void logout(ActionEvent e){
+        chooseCombo.getItems().clear();
+        appScene.setVisible(false);
+        loginScene.setVisible(true);
     }
 
 
