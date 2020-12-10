@@ -7,11 +7,13 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.FileChooser;
 
 import java.net.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.awt.image.*;
 import javax.imageio.*;
@@ -32,21 +34,20 @@ public class Controller implements Initializable {
     AnchorPane appScene;
     @FXML
     ChoiceBox chooseCombo;
-   // @FXML
-    //Image downloadImage;
+
     @FXML
     Button downloadButton;
     @FXML
     Button chooseUpload;
-    //@FXML
-    //Image uploadImage;
+    @FXML
+    ImageView uploadImage;
     @FXML
     Button uploadButton;
     @FXML
     ImageView imageview;
 
 
-
+    private File chosenImage;
     private String dataStr="";
     private ArrayList<String> myUrls = new ArrayList<>();
     private String contentStr = "application/x-www-form-urlencoded";
@@ -185,7 +186,7 @@ public class Controller implements Initializable {
 
             inputStream.close();
             outputStream.close();
-            FileInputStream ins = new FileInputStream("/home/abdallah/IdeaProjects/JavaClientNetwork2/"+fileName);
+            FileInputStream ins = new FileInputStream("/home/abdallah/Desktop/network2Client/JavaClientNetwork2/"+fileName);
             Image image = new Image(ins);
             imageview.setImage(image);
 
@@ -197,25 +198,43 @@ public class Controller implements Initializable {
     }
 
     public void uploadImageToServer(ActionEvent event) throws IOException {
-        URL myURL = new URL("http://localhost:8000/Network2Server_war_exploded/upload");
-        URLConnection myConn = myURL.openConnection();
-        myConn.setDoOutput(true);
-        myConn.setDoInput(true);
-        myConn.setRequestProperty ("Content-Type", contentStr);
-        myConn.setUseCaches(false);
+        String charset = "UTF-8";
+        File uploadFile1 = chosenImage;
+        String requestURL = "http://localhost:8000/Network2Server_war_exploded/upload";
 
-        BufferedImage img = ImageIO.read(new File("/home/abdallah/IdeaProjects/JavaClientNetwork2/im3.jpg"));
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ImageIO.write(img, "jpg", baos);
-        baos.flush();
+        try {
+            MultipartUtility multipart = new MultipartUtility(requestURL, charset);
+            multipart.addFilePart("fileUpload", uploadFile1);
+            List<String> response = multipart.finish();
+            System.out.println("SERVER REPLIED:");
+            for (String line : response) {
+                System.out.println(line);
+            }
+        } catch (IOException ex) {
+            System.err.println(ex);
 
-        byte[] bytes = baos.toByteArray();
-        baos.close();
-        BufferedOutputStream out = new BufferedOutputStream(myConn.getOutputStream());
-
-        out.write(bytes);
-        out.close();
+        }
     }
+
+    public void fileChooserUpload(ActionEvent event) throws FileNotFoundException {
+         chosenImage = getChosenImage();
+    }
+
+    public File getChosenImage() throws FileNotFoundException {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Resource File");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("JPG files (*.jpg)", "*.jpg"),
+                new FileChooser.ExtensionFilter("PNG files (*.png)", "*.png")
+                );
+        File file = fileChooser.showOpenDialog(null);
+        FileInputStream fos = new FileInputStream(file);
+        Image im = new Image(fos);
+        uploadImage.setImage(im);
+        return file;
+
+    }
+
 
 
 

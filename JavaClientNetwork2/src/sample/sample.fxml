@@ -12,7 +12,7 @@
 
 <AnchorPane fx:id="mainScene" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="554.0" prefWidth="667.0" style="-fx-background-color: green;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
    <children>
-      <AnchorPane fx:id="loginScene" layoutX="-1.0" prefHeight="553.0" prefWidth="667.0" style="-fx-background-color: #22c4d4;">
+      <AnchorPane fx:id="loginScene" layoutX="-1.0" prefHeight="553.0" prefWidth="667.0" style="-fx-background-color: #22c4d4;" visible="false">
          <children>
             <Label alignment="CENTER" layoutX="264.0" layoutY="25.0" text="Login" textFill="#f2ebeb">
                <font>
@@ -37,7 +37,7 @@
             </AnchorPane>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="appScene" layoutY="-2.0" prefHeight="563.0" prefWidth="667.0" style="-fx-background-color: #002c3f;" visible="false">
+      <AnchorPane fx:id="appScene" layoutY="-2.0" prefHeight="563.0" prefWidth="667.0" style="-fx-background-color: #002c3f;">
          <children>
             <Label layoutX="72.0" layoutY="27.0" text="Download and Upload Images" textFill="#fff7f7">
                <font>
@@ -66,12 +66,12 @@
                   <Font size="20.0" />
                </font>
             </Label>
-            <Button fx:id="chooseUpload" layoutX="352.0" layoutY="172.0" mnemonicParsing="false" style="-fx-background-color: #1bb4c2; -fx-background-radius: 10;" text="Choose Image to Upload" textFill="#fcf9f9">
+            <Button fx:id="chooseUpload" layoutX="352.0" layoutY="172.0" mnemonicParsing="false" onAction="#fileChooserUpload" style="-fx-background-color: #1bb4c2; -fx-background-radius: 10;" text="Choose Image to Upload" textFill="#fcf9f9">
                <font>
                   <Font size="22.0" />
                </font>
             </Button>
-            <Label layoutX="352.0" layoutY="256.0" text="Preview Image :" textFill="#ebe7e7">
+            <Label layoutX="345.0" layoutY="269.0" text="Preview Image :" textFill="#ebe7e7">
                <font>
                   <Font size="20.0" />
                </font>
@@ -81,8 +81,9 @@
                   <Font size="22.0" />
                </font>
             </Button>
-            <ImageView fx:id="imageview" fitHeight="150.0" fitWidth="200.0" layoutX="37.0" layoutY="314.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="imageview" fitHeight="165.0" fitWidth="255.0" layoutX="37.0" layoutY="314.0" pickOnBounds="true" preserveRatio="true" />
             <ChoiceBox fx:id="chooseCombo" layoutX="37.0" layoutY="159.0" prefHeight="42.0" prefWidth="262.0" />
+            <ImageView fx:id="uploadImage" fitHeight="165.0" fitWidth="255.0" layoutX="362.0" layoutY="314.0" pickOnBounds="true" preserveRatio="true" />
          </children>
       </AnchorPane>
    </children>

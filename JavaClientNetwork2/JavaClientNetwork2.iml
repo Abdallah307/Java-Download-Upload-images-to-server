@@ -8,6 +8,9 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="javafx-swt" level="application" />
-    <orderEntry type="library" name="mysql-connector" level="project" />
+    <orderEntry type="library" name="httpmime-4.5.13" level="project" />
+    <orderEntry type="library" name="httpclient-4.5.13" level="project" />
+    <orderEntry type="library" name="httpclient-4.5.13" level="application" />
+    <orderEntry type="library" name="httpcore-4.4.13" level="application" />
   </component>
 </module>
