@@ -95,6 +95,11 @@
                   <PasswordField fx:id="password" layoutX="56.0" layoutY="153.0" prefHeight="35.0" prefWidth="171.0" promptText="Password" style="-fx-background-radius: 10;" />
                </children>
             </AnchorPane>
+            <Label layoutX="138.0" layoutY="112.0" text="Abdallah Dereia &amp; Muntaser Abu Thaher" textFill="WHITE">
+               <font>
+                  <Font name="Chilanka Regular" size="22.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
    </children>
